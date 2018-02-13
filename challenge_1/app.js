@@ -1,16 +1,18 @@
 
 
 //model of squares
-var board = [[null,null,null],[null,null,null],[null,null,null]];
+var board; // = [[null,null,null],[null,null,null],[null,null,null]];
 
 //define pieces (may later be object, images, etc)
 var X = 'X';
 var O = 'O';
 
-var movesAllowed = true;
+var firstTurn = X;
+
+var movesAllowed;
 
 //Alternate X and 0 turn
-var turn = X;
+var turn;
 
 var toggleTurn = function() {
   if (turn === X) {
@@ -128,7 +130,8 @@ var clearBoard = function() {
   for(var i = 0; i < squares.length; i++) {
     squares[i].innerText = '_';
   }
-  turn = X;
+  turn = firstTurn;
+  movesAllowed = true;
   displayInstructions();
 };
 
@@ -148,6 +151,7 @@ var playMove = function(row, col) {
   if(didWin()) {
     //display win message
     displayMessage(turn + ' won!');
+    firstTurn = turn;
     movesAllowed = false;
   } else if(didTie()) {
     //display tie message
