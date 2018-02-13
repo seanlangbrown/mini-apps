@@ -37,10 +37,25 @@ model.stats.diagSum = function(piece) {
   var sum = 0;
   piece = piece ? piece : model.turn;
   //console.log('checking diagSum', piece);
-  console.log('piece.val', piece.val);
+  //console.log('piece.val', piece.val);
   for(var i = 0; i < model.board.length; i++) {
-    //console.log('checking', i);
     sum += +(model.board[i][i] === piece.val);
+  }
+  //console.log('diagsum', piece.val, sum);
+  return sum;
+};
+
+model.stats.diagSumLeft = function(piece) {
+  var sum = 0;
+  piece = piece ? piece : model.turn;
+  //console.log('checking diagSum', piece);
+  console.log('piece.val', piece.val);
+  var j = model.board.length - 1;
+  for(var i = 0; i < model.board.length; i++) {
+    console.log('checking', j, i);
+    console.log('squal is', model.board[j][i]);
+    sum += +(model.board[j][i] === piece.val);
+    j -= 1;
   }
   console.log('diagsum', piece.val, sum);
   return sum;
@@ -69,17 +84,25 @@ model.stats.rowSum = function(row, piece) {
 
 model.logic.didWin = function() {
   //check board for win
-  if(model.stats.diagSum() === 3) {
-    return true;
+  var win = false;
+  if(model.stats.diagSum() === 3 || model.stats.diagSumLeft() === 3) {
+    win = true;
   }
 
   for(var i = 0; i < 3; i++) {
     if (model.stats.rowSum(i) === 3 || model.stats.colSum(i) === 3) {
-      return true;
+      win = true;
     }
   }
 
-  return false;
+  if(win) {
+    view.util.displayMessage(model.turn.val + ' won!');
+    model.turn.wins++;
+    model.firstTurn = model.turn;
+    model.movesAllowed = false;
+  }
+
+  return win;
 };
 
 model.logic.didTie = function() {
@@ -89,7 +112,33 @@ model.logic.didTie = function() {
       return false;
     }
   }
+  //else tie
+  view.displayTie();
+  model.movesAllowed = false;
   return true;
+};
+
+model.logic.initiateMove = function(row, col) {
+  console.log('move to', row, col);
+  var validMove = model.mod.addPiece(row, col);
+  if(validMove) {
+    console.log('move');
+    if(model.logic.didWin()) {
+      console.log('win');
+    //display win message
+    return true;
+    }
+    if(model.logic.didTie()) {
+      //display tie message
+      return true;
+    }
+    //else valid move, prepare for next turn;
+    model.mod.toggleTurn();
+    //display instructions
+    view.displayInstructions();
+    return true;
+  }
+  return false;
 };
 
 var view = {};
@@ -109,6 +158,10 @@ view.displayInstructions = function() {
 view.displayProhibitedMove = function() {
   view.util.displayMessage(turn.val + ', please choose an empty square');
 }
+
+view.displayTie = function() {
+  view.util.displayMessage('It\'s a tie');
+};
 
 model.mod.addPiece = function(row, col) {
   if(!model.board[row][col]) {
@@ -153,29 +206,7 @@ controller.clearBoard = function() {
 };
 
 controller.playMove = function(row, col) {
-  if(!model.movesAllowed) {
-    return;
-  }
-  var validMove = model.mod.addPiece(row, col);
-  //check for win
-  if(model.logic.didWin()) {
-    //display win message
-    view.util.displayMessage(model.turn.val + ' won!');
-    model.turn.wins++;
-    model.firstTurn = model.turn;
-    model.movesAllowed = false;
-  } else if(model.logic.didTie()) {
-    //display tie message
-    view.displayMessage('It\'s a tie');
-    model.movesAllowed = false;
-  } else if (!validMove) {
-    return;
-  } else {
-    //toggle turn
-    model.mod.toggleTurn();
-    //display instructions
-    view.displayInstructions();
-  }
+  (model.movesAllowed && model.logic.initiateMove(row, col))
 };
 
 document.addEventListener("DOMContentLoaded", controller.init);
