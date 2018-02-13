@@ -119,7 +119,6 @@ var displayPiece = function(row, col) {
 
 //var clearBoard
 var init = function() {
-  displayInstructions();
   clearBoard();
 };
 
@@ -129,6 +128,8 @@ var clearBoard = function() {
   for(var i = 0; i < squares.length; i++) {
     squares[i].innerText = '_';
   }
+  turn = X;
+  displayInstructions();
 };
 
 var boardClick = function(row, col) {
