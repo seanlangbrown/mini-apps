@@ -2,3 +2,4 @@ node_modules
 *.DS_Store
 
 challenge_2/mode_modules
+challenge_2/package-lock.json
