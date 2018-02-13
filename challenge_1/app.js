@@ -136,7 +136,7 @@ view.displayWins = function() {
 }
 
 //var clearBoard
-var init = function() {
+controller.init = function() {
   controller.clearBoard();
 };
 
@@ -153,13 +153,6 @@ controller.clearBoard = function() {
 };
 
 controller.playMove = function(row, col) {
-  //console.log('clicked', row, col);
-//display message ^
-//On click
-  //get coordinates
-
-
-  //fill square
   if(!model.movesAllowed) {
     return;
   }
@@ -185,5 +178,5 @@ controller.playMove = function(row, col) {
   }
 };
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", controller.init);
 
