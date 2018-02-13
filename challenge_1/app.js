@@ -1,11 +1,13 @@
 
 
 //model of squares
-var board = [['','',''],['','',''],['','','']];
+var board = [[null,null,null],[null,null,null],[null,null,null]];
 
 //define pieces (may later be object, images, etc)
 var X = 'X';
 var O = 'O';
+
+var movesAllowed = true;
 
 //Alternate X and 0 turn
 var turn = X;
@@ -19,34 +21,41 @@ var toggleTurn = function() {
 };
 
 
-var diagSum = function() {
+var diagSum = function(piece) {
   var sum = 0;
-  for(var i, j = 0; i < board.length; i++, j++) {
-    sum += +(board[i][j] === turn);
-  }
-  return sum;
-};
-
-var colSum = function(col) {
-  var sum = 0;
+  piece = piece ? piece : turn;
+  //console.log('checking diagSum', piece);
   for(var i = 0; i < board.length; i++) {
-    sum += +(board[i][col] === turn);
+    //console.log('checking', i);
+    sum += +(board[i][i] === piece);
+  }
+  console.log('diagsum', piece, sum);
+  return sum;
+};
+
+var colSum = function(col, piece) {
+  var sum = 0;
+  piece = piece ? piece : turn;
+  for(var i = 0; i < board.length; i++) {
+    sum += +(board[i][col] === piece);
   }
   return sum;
 };
 
-var rowSum = function(row) {
+var rowSum = function(row, piece) {
+  piece = piece ? piece : turn;
   var sum = 0;
   for(var i = 0; i < board[row].length; i++) {
-    sum += +(board[row][i] === turn);
+    sum += +(board[row][i] === piece);
   }
+  console.log(sum);
   return sum;
 };
 
 
 var didWin = function() {
   //check board for win
-  if(diagSum === 3) {
+  if(diagSum() === 3) {
     return true;
   }
 
@@ -59,38 +68,99 @@ var didWin = function() {
   return false;
 };
 
-var postMessage = function(message) {
-  //put text above board
+var didTie = function() {
+  //console.log('diagsum', diagSum(X));
+  if(diagSum(X) === 0 || diagSum(O) === 0) {
+    //return false;
+  }
+  for(var i = 0; i < 3; i++) {
+    console.log('row sums', rowSum(i, X), rowSum(i, O), colSum(i, X), colSum(i, O));
+    if (rowSum(i, X) === 0 || rowSum(i, O) === 0 || colSum(i, X) === 0 || colSum(i, O) === 0) {
+      return false;
+    }
+  }
+  return true;
 };
 
+var displayMessage = function(message) {
+  //put text above board
+  document.getElementById('messageBar').innerText = message;
+};
+
+var displayInstructions = function() {
+  //console.log('It\'s ' + turn + '\'s turn! Click to place a piece.');
+  displayMessage('It\'s ' + turn + '\'s turn! Click to place a piece.');
+};
+
+var displayProhibitedMove = function() {
+  displayMessage(turn + ', please choose an empty square');
+}
+
 var addPiece = function(row, col) {
-  //add piece to model
-  board[row][col] = turn;
-  //display a piece on the board
+  if(!board[row][col]) {
+    //add piece to model
+    board[row][col] = turn;
+    //display a piece on the board
+    displayPiece(row, col);
+    return true;
+  } else {
+    displayProhibitedMove();
+    return false;
+  }
+};
+
+var displayPiece = function(row, col) {
+  //add a piece to the DOM
+  var id = row + ',' + col;
+  console.log(id);
+  document.getElementById(id).innerText = turn;
 };
 
 
 //var clearBoard
+var init = function() {
+  displayInstructions();
+  clearBoard();
+};
+
+var clearBoard = function() {
+  board = [[null,null,null],[null,null,null],[null,null,null]];
+  var squares = document.querySelectorAll(".square");
+  for(var i = 0; i < squares.length; i++) {
+    squares[i].innerHtml = ' ';
+  }
+};
 
 var boardClick = function(row, col) {
-  console.log('clicked');
+  console.log('clicked', row, col);
 //display message ^
 //On click
   //get coordinates
 
+
   //fill square
-  addPiece(row, col);
+  if(!movesAllowed) {
+    return;
+  }
+  var validMove = addPiece(row, col);
   //check for win
   if(didWin()) {
     //display win message
-    postMessage(turn + ' won!');
-    //display reset button??
+    displayMessage(turn + ' won!');
+    movesAllowed = false;
+  } else if(didTie()) {
+    //display tie message
+    displayMessage('It\'s a tie');
+    movesAllowed = false;
+  } else if (!validMove) {
+    return;
   } else {
     //toggle turn
     toggleTurn();
     //display instructions
-    postMessage('it\'s ' + turn + '\'s turn! Click to place a piece.');
+    displayInstructions();
   }
-}
+};
 
+document.addEventListener("DOMContentLoaded", init);
 
