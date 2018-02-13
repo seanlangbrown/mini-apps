@@ -1,6 +1,9 @@
 
 var model = {};
 var controller = {};
+model.mod = {}; 
+model.logic = {};
+model.stats = {};
 
 //model of squares
 model.board; // = [[null,null,null],[null,null,null],[null,null,null]];
@@ -21,7 +24,7 @@ model.movesAllowed;
 //Alternate X.val and 0 turn
 model.turn;
 
-var toggleTurn = function() {
+model.mod.toggleTurn = function() {
   if (model.turn === model.X) {
     model.turn = model.O;
   } else {
@@ -30,7 +33,7 @@ var toggleTurn = function() {
 };
 
 
-model.diagSum = function(piece) {
+model.stats.diagSum = function(piece) {
   var sum = 0;
   piece = piece ? piece : model.turn;
   //console.log('checking diagSum', piece);
@@ -43,7 +46,7 @@ model.diagSum = function(piece) {
   return sum;
 };
 
-model.colSum = function(col, piece) {
+model.stats.colSum = function(col, piece) {
   var sum = 0;
   piece = piece ? piece : model.turn;
   for(var i = 0; i < model.board.length; i++) {
@@ -53,7 +56,7 @@ model.colSum = function(col, piece) {
   return sum;
 };
 
-model.rowSum = function(row, piece) {
+model.stats.rowSum = function(row, piece) {
   piece = piece ? piece : model.turn;
   var sum = 0;
   for(var i = 0; i < model.board[row].length; i++) {
@@ -64,14 +67,14 @@ model.rowSum = function(row, piece) {
 };
 
 
-var didWin = function() {
+model.logic.didWin = function() {
   //check board for win
-  if(model.diagSum() === 3) {
+  if(model.stats.diagSum() === 3) {
     return true;
   }
 
   for(var i = 0; i < 3; i++) {
-    if (model.rowSum(i) === 3 || model.colSum(i) === 3) {
+    if (model.stats.rowSum(i) === 3 || model.stats.colSum(i) === 3) {
       return true;
     }
   }
@@ -79,14 +82,10 @@ var didWin = function() {
   return false;
 };
 
-var didTie = function() {
-  //console.log('diagsum', diagSum(X.val));
-  if(model.diagSum(model.X) === 0 || model.diagSum(model.O) === 0) {
-    //return false;
-  }
+model.logic.didTie = function() {
   for(var i = 0; i < 3; i++) {
     //console.log('row sums', rowSum(i, X.val), rowSum(i, O.val), colSum(i, X.val), colSum(i, O.val));
-    if (model.rowSum(i, model.X) === 0 || model.rowSum(i, model.O) === 0 || model.colSum(i, model.X) === 0 || model.colSum(i, model.O) === 0) {
+    if (model.stats.rowSum(i, model.X) === 0 || model.stats.rowSum(i, model.O) === 0 || model.stats.colSum(i, model.X) === 0 || model.stats.colSum(i, model.O) === 0) {
       return false;
     }
   }
@@ -109,7 +108,7 @@ var displayProhibitedMove = function() {
   displayMessage(turn.val + ', please choose an empty square');
 }
 
-model.addPiece = function(row, col) {
+model.mod.addPiece = function(row, col) {
   if(!model.board[row][col]) {
     //add piece to model
     model.board[row][col] = model.turn.val;
@@ -162,23 +161,23 @@ controller.playMove = function(row, col) {
   if(!model.movesAllowed) {
     return;
   }
-  var validMove = model.addPiece(row, col);
+  var validMove = model.mod.addPiece(row, col);
   //check for win
-  if(didWin()) {
+  if(model.logic.didWin()) {
     //display win message
     displayMessage(model.turn.val + ' won!');
     model.turn.wins++;
     model.firstTurn = model.turn;
-    movesAllowed = false;
-  } else if(didTie()) {
+    model.movesAllowed = false;
+  } else if(model.logic.didTie()) {
     //display tie message
     displayMessage('It\'s a tie');
-    movesAllowed = false;
+    model.movesAllowed = false;
   } else if (!validMove) {
     return;
   } else {
     //toggle turn
-    toggleTurn();
+    model.mod.toggleTurn();
     //display instructions
     displayInstructions();
   }
