@@ -1,9 +1,12 @@
 const express = require('express');
-const router = require('server/router.js');
+var bodyParser = require('body-parser');
+//var static = require('express.static');
+const router = require(__dirname + '/server/router.js');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use('/client', express.static(__dirname + '/client'));
 
 app.use(router);
 
