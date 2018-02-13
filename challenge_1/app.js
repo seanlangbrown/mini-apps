@@ -4,21 +4,26 @@
 var board; // = [[null,null,null],[null,null,null],[null,null,null]];
 
 //define pieces (may later be object, images, etc)
-var X = 'X';
-var O = 'O';
+var X = {};
+X.val = 'X';
+var O = {};
+O.val = 'O';
 
-var firstTurn = X;
+X.wins = 0;
+O.wins = 0;
+
+var firstTurn = X.val;
 
 var movesAllowed;
 
-//Alternate X and 0 turn
+//Alternate X.val and 0 turn
 var turn;
 
 var toggleTurn = function() {
-  if (turn === X) {
-    turn = O;
+  if (turn === X.val) {
+    turn = O.val;
   } else {
-    turn = X;
+    turn = X.val;
   }
 };
 
@@ -71,13 +76,13 @@ var didWin = function() {
 };
 
 var didTie = function() {
-  //console.log('diagsum', diagSum(X));
-  if(diagSum(X) === 0 || diagSum(O) === 0) {
+  //console.log('diagsum', diagSum(X.val));
+  if(diagSum(X.val) === 0 || diagSum(O.val) === 0) {
     //return false;
   }
   for(var i = 0; i < 3; i++) {
-    //console.log('row sums', rowSum(i, X), rowSum(i, O), colSum(i, X), colSum(i, O));
-    if (rowSum(i, X) === 0 || rowSum(i, O) === 0 || colSum(i, X) === 0 || colSum(i, O) === 0) {
+    //console.log('row sums', rowSum(i, X.val), rowSum(i, O.val), colSum(i, X.val), colSum(i, O.val));
+    if (rowSum(i, X.val) === 0 || rowSum(i, O.val) === 0 || colSum(i, X.val) === 0 || colSum(i, O.val) === 0) {
       return false;
     }
   }
