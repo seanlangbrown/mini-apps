@@ -1,5 +1,6 @@
 
 var model = {};
+var controller = {};
 
 //model of squares
 model.board; // = [[null,null,null],[null,null,null],[null,null,null]];
@@ -108,7 +109,7 @@ var displayProhibitedMove = function() {
   displayMessage(turn.val + ', please choose an empty square');
 }
 
-var addPiece = function(row, col) {
+model.addPiece = function(row, col) {
   if(!model.board[row][col]) {
     //add piece to model
     model.board[row][col] = model.turn.val;
@@ -135,10 +136,10 @@ var displayWins = function() {
 
 //var clearBoard
 var init = function() {
-  model.clearBoard();
+  controller.clearBoard();
 };
 
-model.clearBoard = function() {
+controller.clearBoard = function() {
   model.board = [[null,null,null],[null,null,null],[null,null,null]];
   var squares = document.querySelectorAll(".square");
   for(var i = 0; i < squares.length; i++) {
@@ -150,7 +151,7 @@ model.clearBoard = function() {
   displayWins();
 };
 
-var playMove = function(row, col) {
+controller.playMove = function(row, col) {
   //console.log('clicked', row, col);
 //display message ^
 //On click
@@ -161,7 +162,7 @@ var playMove = function(row, col) {
   if(!model.movesAllowed) {
     return;
   }
-  var validMove = addPiece(row, col);
+  var validMove = model.addPiece(row, col);
   //check for win
   if(didWin()) {
     //display win message
