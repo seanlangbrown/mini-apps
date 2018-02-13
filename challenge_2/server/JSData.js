@@ -1,4 +1,6 @@
 
+_ = require('underscore');
+
 const Data = function() {
   this._data = [];
   this._headers = [];
@@ -115,3 +117,6 @@ data.prototype.printCSV = function() {
 data.prototype.importJSON = function(obj) {
 
 };
+
+
+module.exports = data;

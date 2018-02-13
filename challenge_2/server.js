@@ -5,7 +5,8 @@ const router = require(__dirname + '/server/router.js');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); //bodyParser.JSON()
+
 app.use('/client', express.static(__dirname + '/client'));
 
 app.use(router);
