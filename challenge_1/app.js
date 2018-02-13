@@ -93,19 +93,21 @@ model.logic.didTie = function() {
 };
 
 var view = {};
+view.util = {};
+view.board = {};
 
-var displayMessage = function(message) {
+view.util.displayMessage = function(message) {
   //put text above board
   document.getElementById('messageBar').innerText = message;
 };
 
-var displayInstructions = function() {
+view.displayInstructions = function() {
   //console.log('It\'s ' + turn + '\'s turn! Click to place a piece.');
-  displayMessage('It\'s ' + model.turn.val + '\'s turn! Click to place a piece.');
+  view.util.displayMessage('It\'s ' + model.turn.val + '\'s turn! Click to place a piece.');
 };
 
-var displayProhibitedMove = function() {
-  displayMessage(turn.val + ', please choose an empty square');
+view.displayProhibitedMove = function() {
+  view.util.displayMessage(turn.val + ', please choose an empty square');
 }
 
 model.mod.addPiece = function(row, col) {
@@ -113,22 +115,22 @@ model.mod.addPiece = function(row, col) {
     //add piece to model
     model.board[row][col] = model.turn.val;
     //display a piece on the board
-    displayPiece(row, col);
+    view.board.displayPiece(row, col);
     return true;
   } else {
-    displayProhibitedMove();
+    view.displayProhibitedMove();
     return false;
   }
 };
 
-var displayPiece = function(row, col) {
+view.board.displayPiece = function(row, col) {
   //add a piece to the DOM
   var id = row + ',' + col;
   //console.log(id);
   document.getElementById(id).innerText = model.turn.val;
 };
 
-var displayWins = function() {
+view.displayWins = function() {
 
   //append win counts to the DOM, with Name;
 }
@@ -146,8 +148,8 @@ controller.clearBoard = function() {
   }
   model.turn = model.firstTurn;
   model.movesAllowed = true;
-  displayInstructions();
-  displayWins();
+  view.displayInstructions();
+  view.displayWins();
 };
 
 controller.playMove = function(row, col) {
@@ -165,13 +167,13 @@ controller.playMove = function(row, col) {
   //check for win
   if(model.logic.didWin()) {
     //display win message
-    displayMessage(model.turn.val + ' won!');
+    view.util.displayMessage(model.turn.val + ' won!');
     model.turn.wins++;
     model.firstTurn = model.turn;
     model.movesAllowed = false;
   } else if(model.logic.didTie()) {
     //display tie message
-    displayMessage('It\'s a tie');
+    view.displayMessage('It\'s a tie');
     model.movesAllowed = false;
   } else if (!validMove) {
     return;
@@ -179,7 +181,7 @@ controller.playMove = function(row, col) {
     //toggle turn
     model.mod.toggleTurn();
     //display instructions
-    displayInstructions();
+    view.displayInstructions();
   }
 };
 
