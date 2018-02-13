@@ -1,61 +1,62 @@
 
+var model = {};
 
 //model of squares
-var board; // = [[null,null,null],[null,null,null],[null,null,null]];
+model.board; // = [[null,null,null],[null,null,null],[null,null,null]];
 
 //define pieces (may later be object, images, etc)
-var X = {};
-X.val = 'X';
-var O = {};
-O.val = 'O';
+model.X = {};
+model.X.val = 'X';
+model.O = {};
+model.O.val = 'O';
 
-X.wins = 0;
-O.wins = 0;
+model.X.wins = 0;
+model.O.wins = 0;
 
-var firstTurn = X;
+model.firstTurn = model.X;
 
-var movesAllowed;
+model.movesAllowed;
 
 //Alternate X.val and 0 turn
-var turn;
+model.turn;
 
 var toggleTurn = function() {
-  if (turn === X) {
-    turn = O;
+  if (model.turn === model.X) {
+    model.turn = model.O;
   } else {
-    turn = X;
+    model.turn = model.X;
   }
 };
 
 
-var diagSum = function(piece) {
+model.diagSum = function(piece) {
   var sum = 0;
-  piece = piece ? piece : turn;
+  piece = piece ? piece : model.turn;
   //console.log('checking diagSum', piece);
   console.log('piece.val', piece.val);
-  for(var i = 0; i < board.length; i++) {
+  for(var i = 0; i < model.board.length; i++) {
     //console.log('checking', i);
-    sum += +(board[i][i] === piece.val); //broken
+    sum += +(model.board[i][i] === piece.val);
   }
   console.log('diagsum', piece.val, sum);
   return sum;
 };
 
-var colSum = function(col, piece) {
+model.colSum = function(col, piece) {
   var sum = 0;
-  piece = piece ? piece : turn;
-  for(var i = 0; i < board.length; i++) {
-    sum += +(board[i][col] === piece.val);
+  piece = piece ? piece : model.turn;
+  for(var i = 0; i < model.board.length; i++) {
+    sum += +(model.board[i][col] === piece.val);
   }
   console.log('colsum', piece.val, sum);
   return sum;
 };
 
-var rowSum = function(row, piece) {
-  piece = piece ? piece : turn;
+model.rowSum = function(row, piece) {
+  piece = piece ? piece : model.turn;
   var sum = 0;
-  for(var i = 0; i < board[row].length; i++) {
-    sum += +(board[row][i] === piece.val);
+  for(var i = 0; i < model.board[row].length; i++) {
+    sum += +(model.board[row][i] === piece.val);
   }
   //console.log(sum);
   return sum;
@@ -64,12 +65,12 @@ var rowSum = function(row, piece) {
 
 var didWin = function() {
   //check board for win
-  if(diagSum() === 3) {
+  if(model.diagSum() === 3) {
     return true;
   }
 
   for(var i = 0; i < 3; i++) {
-    if (rowSum(i) === 3 || colSum(i) === 3) {
+    if (model.rowSum(i) === 3 || model.colSum(i) === 3) {
       return true;
     }
   }
@@ -79,17 +80,19 @@ var didWin = function() {
 
 var didTie = function() {
   //console.log('diagsum', diagSum(X.val));
-  if(diagSum(X) === 0 || diagSum(O) === 0) {
+  if(model.diagSum(model.X) === 0 || model.diagSum(model.O) === 0) {
     //return false;
   }
   for(var i = 0; i < 3; i++) {
     //console.log('row sums', rowSum(i, X.val), rowSum(i, O.val), colSum(i, X.val), colSum(i, O.val));
-    if (rowSum(i, X) === 0 || rowSum(i, O) === 0 || colSum(i, X) === 0 || colSum(i, O) === 0) {
+    if (model.rowSum(i, model.X) === 0 || model.rowSum(i, model.O) === 0 || model.colSum(i, model.X) === 0 || model.colSum(i, model.O) === 0) {
       return false;
     }
   }
   return true;
 };
+
+var view = {};
 
 var displayMessage = function(message) {
   //put text above board
@@ -98,7 +101,7 @@ var displayMessage = function(message) {
 
 var displayInstructions = function() {
   //console.log('It\'s ' + turn + '\'s turn! Click to place a piece.');
-  displayMessage('It\'s ' + turn.val + '\'s turn! Click to place a piece.');
+  displayMessage('It\'s ' + model.turn.val + '\'s turn! Click to place a piece.');
 };
 
 var displayProhibitedMove = function() {
@@ -106,9 +109,9 @@ var displayProhibitedMove = function() {
 }
 
 var addPiece = function(row, col) {
-  if(!board[row][col]) {
+  if(!model.board[row][col]) {
     //add piece to model
-    board[row][col] = turn.val;
+    model.board[row][col] = model.turn.val;
     //display a piece on the board
     displayPiece(row, col);
     return true;
@@ -122,24 +125,29 @@ var displayPiece = function(row, col) {
   //add a piece to the DOM
   var id = row + ',' + col;
   //console.log(id);
-  document.getElementById(id).innerText = turn.val;
+  document.getElementById(id).innerText = model.turn.val;
 };
 
+var displayWins = function() {
+
+  //append win counts to the DOM, with Name;
+}
 
 //var clearBoard
 var init = function() {
-  clearBoard();
+  model.clearBoard();
 };
 
-var clearBoard = function() {
-  board = [[null,null,null],[null,null,null],[null,null,null]];
+model.clearBoard = function() {
+  model.board = [[null,null,null],[null,null,null],[null,null,null]];
   var squares = document.querySelectorAll(".square");
   for(var i = 0; i < squares.length; i++) {
     squares[i].innerText = '_';
   }
-  turn = firstTurn;
-  movesAllowed = true;
+  model.turn = model.firstTurn;
+  model.movesAllowed = true;
   displayInstructions();
+  displayWins();
 };
 
 var playMove = function(row, col) {
@@ -150,15 +158,16 @@ var playMove = function(row, col) {
 
 
   //fill square
-  if(!movesAllowed) {
+  if(!model.movesAllowed) {
     return;
   }
   var validMove = addPiece(row, col);
   //check for win
   if(didWin()) {
     //display win message
-    displayMessage(turn.val + ' won!');
-    firstTurn = turn;
+    displayMessage(model.turn.val + ' won!');
+    model.turn.wins++;
+    model.firstTurn = model.turn;
     movesAllowed = false;
   } else if(didTie()) {
     //display tie message
