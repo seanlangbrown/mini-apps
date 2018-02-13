@@ -141,6 +141,16 @@ model.logic.initiateMove = function(row, col) {
   return false;
 };
 
+model.logic.startGame = function() {
+  model.board = [[null,null,null],[null,null,null],[null,null,null]];
+  model.turn = model.firstTurn;
+  model.movesAllowed = true;
+
+  view.board.clearSquares();
+  view.displayInstructions();
+  view.displayWins();
+};
+
 var view = {};
 view.util = {};
 view.board = {};
@@ -188,21 +198,20 @@ view.displayWins = function() {
   //append win counts to the DOM, with Name;
 }
 
+view.board.clearSquares = function() {
+  var squares = document.querySelectorAll(".square");
+  for(var i = 0; i < squares.length; i++) {
+    squares[i].innerText = '_';
+  }
+}
+
 //var clearBoard
 controller.init = function() {
   controller.clearBoard();
 };
 
 controller.clearBoard = function() {
-  model.board = [[null,null,null],[null,null,null],[null,null,null]];
-  var squares = document.querySelectorAll(".square");
-  for(var i = 0; i < squares.length; i++) {
-    squares[i].innerText = '_';
-  }
-  model.turn = model.firstTurn;
-  model.movesAllowed = true;
-  view.displayInstructions();
-  view.displayWins();
+  model.logic.startGame();
 };
 
 controller.playMove = function(row, col) {
