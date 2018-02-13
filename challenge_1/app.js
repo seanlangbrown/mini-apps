@@ -127,7 +127,7 @@ var clearBoard = function() {
   board = [[null,null,null],[null,null,null],[null,null,null]];
   var squares = document.querySelectorAll(".square");
   for(var i = 0; i < squares.length; i++) {
-    squares[i].innerHtml = ' ';
+    squares[i].innerText = '_';
   }
 };
 
