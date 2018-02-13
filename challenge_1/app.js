@@ -29,7 +29,7 @@ var diagSum = function(piece) {
     //console.log('checking', i);
     sum += +(board[i][i] === piece);
   }
-  console.log('diagsum', piece, sum);
+  //console.log('diagsum', piece, sum);
   return sum;
 };
 
@@ -48,7 +48,7 @@ var rowSum = function(row, piece) {
   for(var i = 0; i < board[row].length; i++) {
     sum += +(board[row][i] === piece);
   }
-  console.log(sum);
+  //console.log(sum);
   return sum;
 };
 
@@ -74,7 +74,7 @@ var didTie = function() {
     //return false;
   }
   for(var i = 0; i < 3; i++) {
-    console.log('row sums', rowSum(i, X), rowSum(i, O), colSum(i, X), colSum(i, O));
+    //console.log('row sums', rowSum(i, X), rowSum(i, O), colSum(i, X), colSum(i, O));
     if (rowSum(i, X) === 0 || rowSum(i, O) === 0 || colSum(i, X) === 0 || colSum(i, O) === 0) {
       return false;
     }
@@ -112,7 +112,7 @@ var addPiece = function(row, col) {
 var displayPiece = function(row, col) {
   //add a piece to the DOM
   var id = row + ',' + col;
-  console.log(id);
+  //console.log(id);
   document.getElementById(id).innerText = turn;
 };
 
@@ -132,8 +132,8 @@ var clearBoard = function() {
   displayInstructions();
 };
 
-var boardClick = function(row, col) {
-  console.log('clicked', row, col);
+var playMove = function(row, col) {
+  //console.log('clicked', row, col);
 //display message ^
 //On click
   //get coordinates
