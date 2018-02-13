@@ -1,29 +1,30 @@
 
-var model = {};
-var controller = {};
-model.mod = {}; 
-model.logic = {};
-model.stats = {};
+var model = {}; //state of the game
+var controller = {}; //receive user input
+model.mod = {};  //manipulate the model
+model.logic = {}; //conditionally manipulate the model and the view
+model.stats = {}; //report on the state of the board
 
 //model of squares
-model.board; // = [[null,null,null],[null,null,null],[null,null,null]];
+model.board = []; //store data about board, initialize = [[null,null,null],[null,null,null],[null,null,null]];
 
 //define pieces (may later be object, images, etc)
-model.X = {};
+model.X = {};  //store data about players
 model.X.val = 'X';
 model.O = {};
 model.O.val = 'O';
 
-model.X.wins = 0;
+model.X.wins = 0; //scoreboard
 model.O.wins = 0;
+model.X.name = 'Player X'
+model.O.name = 'Player O'
+model.games = 0; //counter
 
-model.firstTurn = model.X;
-
-model.movesAllowed;
+model.firstTurn = model.X; //player to get first turn
+model.movesAllowed; //boolean game is not ver
+model.turn; //current player
 
 //Alternate X.val and 0 turn
-model.turn;
-
 model.mod.toggleTurn = function() {
   if (model.turn === model.X) {
     model.turn = model.O;
@@ -31,6 +32,11 @@ model.mod.toggleTurn = function() {
     model.turn = model.X;
   }
 };
+
+model.mod.names = function(x, o) {
+  model.X.name = x;
+  model.O.name = o;
+}
 
 
 model.stats.diagSum = function(piece) {
@@ -96,10 +102,11 @@ model.logic.didWin = function() {
   }
 
   if(win) {
-    view.util.displayMessage(model.turn.val + ' won!');
+    view.displayWin();
     model.turn.wins++;
     model.firstTurn = model.turn;
     model.movesAllowed = false;
+    model.counter++;
   }
 
   return win;
@@ -115,6 +122,7 @@ model.logic.didTie = function() {
   //else tie
   view.displayTie();
   model.movesAllowed = false;
+  model.games++;
   return true;
 };
 
@@ -148,7 +156,7 @@ model.logic.startGame = function() {
 
   view.board.clearSquares();
   view.displayInstructions();
-  view.displayWins();
+  view.util.displayWins(model.X.name, model.X.wins, model.O.name, model.O.wins);
 };
 
 var view = {};
@@ -160,17 +168,25 @@ view.util.displayMessage = function(message) {
   document.getElementById('messageBar').innerText = message;
 };
 
+view.util.displayWins = function(x_name, x_score, o_name, o_score) {
+  document.getElementById('scoreboard').innerText = 'Wins: ' + x_name + '-' + x_score + ', ' + o_name + '-' + o_score;
+};
+
 view.displayInstructions = function() {
   //console.log('It\'s ' + turn + '\'s turn! Click to place a piece.');
-  view.util.displayMessage('It\'s ' + model.turn.val + '\'s turn! Click to place a piece.');
+  view.util.displayMessage('It\'s ' + model.turn.name + '\'s turn! Click to place a piece.');
 };
 
 view.displayProhibitedMove = function() {
-  view.util.displayMessage(turn.val + ', please choose an empty square');
-}
+  view.util.displayMessage(turn.name + ', please choose an empty square');
+};
 
 view.displayTie = function() {
   view.util.displayMessage('It\'s a tie');
+};
+
+view.displayWin = function() {
+  view.util.displayMessage(model.turn.name + ' won!');
 };
 
 model.mod.addPiece = function(row, col) {
@@ -193,20 +209,22 @@ view.board.displayPiece = function(row, col) {
   document.getElementById(id).innerText = model.turn.val;
 };
 
-view.displayWins = function() {
-
-  //append win counts to the DOM, with Name;
-}
-
 view.board.clearSquares = function() {
   var squares = document.querySelectorAll(".square");
   for(var i = 0; i < squares.length; i++) {
     squares[i].innerText = '_';
   }
-}
+};
 
+controller.getNames = function() {
+  var playerX = prompt('Player X, please enter your name:');
+  var playerO = prompt('Player O, please enter your name:');
+  return [playerX, playerO];
+};
 //var clearBoard
 controller.init = function() {
+  var names = controller.getNames();
+  model.mod.names(names[0], names[1]);
   controller.clearBoard();
 };
 
