@@ -1,5 +1,5 @@
 const express = require('express')
-//const JSONtoCSV = require('JSONtoCSV.js');
+const JSONtoCSV = require(__dirname + '/JSONtoCSV.js');
 const router = express.Router();
 const workDir = '/Users/slangbro/Code/HackReactor/hrsf90-mini-apps/challenge_2/'
 
@@ -9,9 +9,11 @@ router.get('/', (req, res) => {
 
 router.post('/JSON', (req, res) => {
 
-  console.log('/JSON Post received', req.body);
+  let input_json = req.body.input_json.replace(/\'/g, '"');
 
-  res.end(/*JSONtoCSV.convert(req.body)*/);
+  console.log('/JSON Post received', JSON.parse(input_json));
+
+  res.end(JSONtoCSV.convert());
 
 });
 
