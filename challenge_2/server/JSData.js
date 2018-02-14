@@ -1,5 +1,5 @@
 
-_ = require('underscore');
+const _ = require('underscore');
 
 const Data = function() {
   this._data = [];
@@ -13,13 +13,13 @@ const Element = function() {
   this.row = null;
 };
 
-data.prototype.addRow = function(row) {
+Data.prototype.addRow = function(row) {
   if(Array.isArray(row) && row.length === data.length) {
     this._data.push(row);
   }
 };
 
-data.prototype.addCol = function(row, header, overwrite=true) {
+Data.prototype.addCol = function(row, header, overwrite=true) {
   if(header) {
     let idx = this._headers.indexOf(header);
     if(overwrite && idx !== -1) {
@@ -40,14 +40,14 @@ data.prototype.addCol = function(row, header, overwrite=true) {
         item.value = row[i];
         return item;
       }
-    };
+    });
     return true;
   }
   return false;
 }
 
 
-data.prototype.iterCol = function(colnum, callback) {
+Data.prototype.iterCol = function(colnum, callback) {
   if(colnum < this._headers.length) {
     _.each(this._data, (row, i) => {
       callback(row[colnum]);
@@ -58,17 +58,17 @@ data.prototype.iterCol = function(colnum, callback) {
       if(newItem instanceof Element) {
         row[colnum] = newItem;
       }
-    }
+    });
   }
 };
 
-data.prototype.iterRow = function(rownum, callback) {
+Data.prototype.iterRow = function(rownum, callback) {
   if (row < this._data.length) {
     _.each(this._data[rownum], callback);
   }
 }
 
-data.prototype.iterAll = function(callback, headers) {
+Data.prototype.iterAll = function(callback, headers) {
   if (headers) {
     _.each(this._headers, callback);
   }
@@ -77,19 +77,19 @@ data.prototype.iterAll = function(callback, headers) {
   })
 };
 
-data.prototype.iterColValues = function(colunm, callback) {
+Data.prototype.iterColValues = function(colunm, callback) {
   this.itercol(colnum, (element) => {
     return callback(element.value);
   })
 };
 
-data.prototype.iterRowValues = function(rownum, callback) {
+Data.prototype.iterRowValues = function(rownum, callback) {
   this.iterRow(rownum, (element) => {
     callback(element.value);
   })
 };
 
-data.prototype.iterAllValues = function(callback, headers) {
+Data.prototype.iterAllValues = function(callback, headers) {
   this.iterAll((item) => {
     callback(item.value);
   }, headers);
@@ -98,25 +98,25 @@ data.prototype.iterAllValues = function(callback, headers) {
 //method to insert header,row....
 //method to get header,row...
 
-data.prototype.printData = function(rowSeperator, colSeperator) {
+Data.prototype.printData = function(rowSeperator, colSeperator) {
   let rows = [];
   for(var i = 0; i < this._data.length; i++) {
     let row = []
     this.iterRowValues(i, (val) => (rows[i].push(val)));
-    rows.push(row.join(colSeperator);
+    rows.push(row.join(colSeperator));
   };
 
   page = rows.join(rowSeperator);
   return page;
 };
 
-data.prototype.printCSV = function() {
+Data.prototype.printCSV = function() {
   return this.printData('\n', ',');
 };
 
-data.prototype.importJSON = function(obj) {
+Data.prototype.importJSON = function(obj) {
 
 };
 
 
-module.exports = data;
+module.exports = Data;
