@@ -124,16 +124,17 @@ const Data  = class {
     }
     this._headers = headers;
 
-    const rowWorker => (child) {
+    const rowWorker = (child) => {
       let row = [];
       for(var j = 0; j < headers.length; j++) {
         row.push(child[header[j]]);
       }
       this.addRow(row);
-      for(var i = 0; i < child.children.length) {
+      for(var i = 0; i < child.children.length; i++) {
         rowWorker(child.children[i]);
       }
     };
+    rowWorker(obj);
   }
 
 };
