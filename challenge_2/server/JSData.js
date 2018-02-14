@@ -15,7 +15,10 @@ const Data  = class {
 
   addRow (row) {
     if(Array.isArray(row) && row.length === this._headers.length) {
-      this._data.push(row);
+      let elementRow = _.map(row, (val) => {
+        return new Element(val);
+      });
+      this._data.push(elementRow);
     }
   }
 
@@ -85,6 +88,7 @@ const Data  = class {
 
   iterRowValues (rownum, callback) {
     this.iterRow(rownum, (element) => {
+      console.log('value', element.value);
       callback(element.value);
     })
   }
@@ -102,11 +106,13 @@ const Data  = class {
     let rows = [];
     for(var i = 0; i < this._data.length; i++) {
       let row = []
-      this.iterRowValues(i, (val) => (rows[i].push(val)));
+      this.iterRowValues(i, (val) => {
+        row.push(val);
+        console.log('val', val);});
       rows.push(row.join(colSeperator));
     }
 
-    page = rows.join(rowSeperator);
+    let page = rows.join(rowSeperator);
     return page;
   }
 
@@ -144,8 +150,8 @@ const Data  = class {
 };
 
 class Element {
-  constructor() {
-    this.value = null;
+  constructor(val) {
+    this.value = val ? val : null;
     this.head = null;
     this.row = null;
   }
