@@ -52,10 +52,13 @@ var getCSV = function(processId, attempts) {
         //if processing, ping again
         setTimeout(getCSV(processId, attempts - 1), 200);
         console.log('ping');
+        return;
       } else if (data === 'error') {
         //if failed, display message
         console.log('ERROR!');
-      }
+        return;
+      } 
+      displayCSV(data);
     },
     error: function(jqXHR, textStatus, error) {
       console.log('error function', error);
