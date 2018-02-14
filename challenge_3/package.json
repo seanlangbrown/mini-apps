@@ -1,0 +1,32 @@
+{
+  "name": "challenge3connectfour",
+  "version": "1.0.0",
+  "description": "dependancies for connectfour server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanlangbrown/hrsf90-mini-apps.git"
+  },
+  "keywords": [
+    "express",
+    "connectfour"
+  ],
+  "author": "Sean Lang-Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seanlangbrown/hrsf90-mini-apps/issues"
+  },
+  "homepage": "https://github.com/seanlangbrown/hrsf90-mini-apps#readme",
+  "devDependencies": {
+    "nodemon": "^1.14.12"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "express": "^4.16.2",
+    "node": "^9.5.0"
+  }
+}
