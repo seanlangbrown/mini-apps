@@ -29,10 +29,10 @@ module.exports.newJob = function(input_json) {
 };
 
 const processJob = function(id) {
-
+  console.log('processing json');
   let data = new JSData();
-  //data.importJSON(jobs[id].input_json);
-  jobs[id].csv = 'i, j';//data.printCSV();//convert(job.input_json);
+  data.importJSON(jobs[id].input_json);
+  jobs[id].csv = data.printCSV();//convert(job.input_json);
   fs.writeFile(makeCSVfilename(id), jobs[id].csv, 'utf-8', (err) => {
     if (err) {
       jobs[id].status = 'error';

@@ -63,7 +63,7 @@ const Data  = class {
   }
 
   iterRow (rownum, callback) {
-    if (row < this._data.length) {
+    if (rownum < this._data.length) {
       _.each(this._data[rownum], callback);
     }
   }
@@ -115,6 +115,10 @@ const Data  = class {
   }
 
   importJSON (obj) {
+    if(typeof obj == 'string') {
+      obj = JSON.parse(obj);
+    }
+
     let headers = [];
     let row = [];
     for (var key in obj) {
@@ -125,9 +129,10 @@ const Data  = class {
     this._headers = headers;
 
     const rowWorker = (child) => {
+      console.log('obj', child);
       let row = [];
       for(var j = 0; j < headers.length; j++) {
-        row.push(child[header[j]]);
+        row.push(child[headers[j]]);
       }
       this.addRow(row);
       for(var i = 0; i < child.children.length; i++) {
@@ -136,7 +141,6 @@ const Data  = class {
     };
     rowWorker(obj);
   }
-
 };
 
 class Element {
