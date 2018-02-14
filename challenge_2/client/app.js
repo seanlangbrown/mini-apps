@@ -41,7 +41,7 @@ var getCSV = function(processId, attempts) {
     type: 'GET',
     url: '/CSV',
     data: {csv_id: processId},
-    dataType: 'json',
+    dataType: 'text',
     success: function(data) {
       console.log('GET SUCCESS:', data);
 

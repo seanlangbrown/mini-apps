@@ -8,17 +8,14 @@ router.get('/', (req, res) => {
 })
 
 router.get('/CSV', (req, res) => {
-  console.log('GET received', req.url);
-  res.json('processing');
-  res.end();
-  /*
-  if(done) {
-  res.sendFile(workDir + '/CSV/' + req.body.id);
-  } else if (processing) {
-    res.statusCode(401).send('file processing');
-  } else if (error) {
-    res.statusCode(405).send('error processing');
-  }*/
+  console.log('GET received', req.query.csv_id);
+  let status = JSONtoCSV.jobStatus(req.query.csv_id);
+  if(status !== 'complete') {
+    res.end(status);
+  } else {
+    console.log('sending file', JSONtoCSV.makeCSVfilename(req.query.csv_id));
+    res.sendFile(JSONtoCSV.makeCSVfilename(req.query.csv_id));
+  }
 });
 
 router.post('/JSON', (req, res) => {
@@ -29,7 +26,7 @@ router.post('/JSON', (req, res) => {
 
   //check validity
   //assign id
-  let id = '100';
+  let id = JSONtoCSV.newJob(input_json);
 
   res.end(id);
 
