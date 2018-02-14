@@ -8,7 +8,7 @@ let n = 0;
 
 const generateId = function() {
   n++;
-  return '100';
+  return '' + n;
 };
 
 module.exports.newJob = function(input_json) {
@@ -66,7 +66,6 @@ const makeCSVfilename = function(id) {
 }
 
 const csvDir = __dirname + '/CSV/';
-module.exports.csvDir = csvDir;
 fs.mkdir(csvDir, ()=>(console.log('CSV directory created')));
 
 module.exports.makeCSVfilename = makeCSVfilename;
