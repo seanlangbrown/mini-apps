@@ -7,4 +7,5 @@ challenge_2/server/CSV
 
 challenge_3/node_modules
 challenge_3/client/dist
+challenge_3/client/dist/bundle.js
 
