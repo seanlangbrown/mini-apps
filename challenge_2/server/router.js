@@ -7,13 +7,35 @@ router.get('/', (req, res) => {
   res.sendFile(workDir + 'client/index.html');
 })
 
+router.get('/CSV', (req, res) => {
+  console.log('GET received', req.url);
+  res.json('processing');
+  res.end();
+  /*
+  if(done) {
+  res.sendFile(workDir + '/CSV/' + req.body.id);
+  } else if (processing) {
+    res.statusCode(401).send('file processing');
+  } else if (error) {
+    res.statusCode(405).send('error processing');
+  }*/
+});
+
 router.post('/JSON', (req, res) => {
 
   let input_json = req.body.input_json.replace(/\'/g, '"');
 
-  console.log('/JSON Post received', JSON.parse(input_json));
+  console.log('/JSON Post received', input_json);
 
-  res.end(JSONtoCSV.convert());
+  //check validity
+  //assign id
+  let id = '100';
+
+  res.end(id);
+
+  
+
+  //process JSON
 
 });
 
