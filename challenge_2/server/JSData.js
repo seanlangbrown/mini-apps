@@ -7,8 +7,14 @@ const Data  = class {
     this._headers = [];
   }
 
+  writeHeaders (headers) {
+    if (Array.isArray(headers) && (headers.length === this._headers.length || this._headers.length === 0)) {
+      this._headers = headers;
+    }
+  }
+
   addRow (row) {
-    if(Array.isArray(row) && row.length === data.length) {
+    if(Array.isArray(row) && row.length === this._headers.length) {
       this._data.push(row);
     }
   }
@@ -109,8 +115,27 @@ const Data  = class {
   }
 
   importJSON (obj) {
+    let headers = [];
+    let row = [];
+    for (var key in obj) {
+      if(key !== 'children') {
+        headers.push(key);
+      }
+    }
+    this._headers = headers;
 
+    const rowWorker => (child) {
+      let row = [];
+      for(var j = 0; j < headers.length; j++) {
+        row.push(child[header[j]]);
+      }
+      this.addRow(row);
+      for(var i = 0; i < child.children.length) {
+        rowWorker(child.children[i]);
+      }
+    };
   }
+
 };
 
 class Element {
