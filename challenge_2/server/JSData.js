@@ -104,6 +104,7 @@ const Data  = class {
 
   printData (rowSeperator, colSeperator) {
     let rows = [];
+    rows.push(this._headers.join(colSeperator));
     for(var i = 0; i < this._data.length; i++) {
       let row = []
       this.iterRowValues(i, (val) => {
@@ -117,12 +118,12 @@ const Data  = class {
   }
 
   printCSV () {
-    return this.printData('\n', ',');
+    return this.printData('\\n', ',');
   }
 
   importJSON (obj) {
     if(typeof obj == 'string') {
-      obj = JSON.parse(obj);
+      obj = JSON.parse(obj)
     }
 
     let headers = [];
@@ -141,8 +142,10 @@ const Data  = class {
         row.push(child[headers[j]]);
       }
       this.addRow(row);
-      for(var i = 0; i < child.children.length; i++) {
-        rowWorker(child.children[i]);
+      if (child.children !== undefined) {
+        for(var i = 0; i < child.children.length; i++) {
+          rowWorker(child.children[i]);
+        }
       }
     };
     rowWorker(obj);

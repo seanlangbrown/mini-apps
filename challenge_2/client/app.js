@@ -18,8 +18,18 @@ var JSONHandler = function() {
 };
 
 var displayCSV = function(csv) {
-  $('body').append(csv);
+  //$('.csv').innerHtml('');
+  $('#csv').empty();
+  $('#csv').append('<h4>CSV:</h4>');
+  csv = csv.replace(/\\n/g, '<br />');
+  csv = csv.replace(/,/g, ', ');
+  $('#csv').append(csv);
 };
+
+var displayMessage = function(message) {
+  $('#csv').empty();
+  $('#csv').append(message);
+}
 
 var postJSON = function(data) {
   $.ajax({
@@ -30,6 +40,9 @@ var postJSON = function(data) {
     success: function(data) {
       console.log('POST SUCCESS:', data);
       getCSV(data);
+    },
+    error: function(jqXHR, error, errorText) {
+      displayMessage(errorText);
     }
   });
 };
@@ -47,6 +60,7 @@ var getCSV = function(processId, attempts) {
 
       if (attempts < 0) {
         console.log('TIMEOUT');
+        displayMessage('Server is busy, please try again');
         return;
       } else if(data === 'processing') {
         //if processing, ping again
@@ -56,6 +70,7 @@ var getCSV = function(processId, attempts) {
       } else if (data === 'error') {
         //if failed, display message
         console.log('ERROR!');
+        displayMessage('Server error: please check your syntax and try again.  Input must be a JSON string with key: value pairs.');
         return;
       } 
       displayCSV(data);

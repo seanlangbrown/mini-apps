@@ -22,6 +22,14 @@ router.post('/JSON', (req, res) => {
 
   let input_json = req.body.input_json.replace(/\'/g, '"');
 
+  try {
+    let jstring = JSON.parse(input_json);
+  } 
+  catch (error) {
+    res.end('Syntax Error: ' + error.toString());
+    next();
+  }
+
   console.log('/JSON Post received', input_json);
 
   //check validity
