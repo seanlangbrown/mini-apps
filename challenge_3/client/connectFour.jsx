@@ -33,7 +33,7 @@ class ConnectFour extends React.Component {
       for (var i = col.length - 1; i > -1 ; i--) {
         if (col[i] === null) {
 
-          if (!this.didWin(i, colnum)) {
+          if (!this.didWin(i, colnum) && !this.didTie()) {
             this.updateSquare(colnum, i, ()=>(this.state.turn), {turn: this.nextTurn()});
           }
           break;
@@ -166,12 +166,21 @@ class ConnectFour extends React.Component {
         //   console.log('GAME OVER');
         //   this.updateSquare(coords[0], coords[1], (color) => (color + ' win'));
         // }
+        console.log('GAME OVER: win');
         return true;
       }
     }
     return false;
   }
 
+  didTie() {
+    let tie = !_.includes(_.map(this.state.board, (col) => (_.includes(col, null))), true);
+    if (tie) {
+      console.log('GAME OVER: Tie');
+      return true;
+    }
+    return false;
+  }
 
 
   render() {
