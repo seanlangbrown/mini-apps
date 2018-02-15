@@ -1,0 +1,38 @@
+.boardCol {
+	position: relative;
+	display: inline-block;
+	align-content: left;
+	height: 100%;
+	width: 110px;
+	color: red;
+}
+
+.square {
+  padding: 0px;
+  position: relative;
+  display: block;
+  height: 100px;
+  width: 100px;
+  background-color: white;
+  border-radius: 100%;
+  margin: 5px 5px 5px 5px;
+}
+
+.square .red {
+  background-color: red;
+}
+
+.square .black {
+  background-color: black;
+}
+
+.square .win {
+  border: 10px solid yellow;
+}
+
+.board {
+	background-color: blue;
+	height: 670px;
+	width: 1000px;
+	padding: 5px;
+}
