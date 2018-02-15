@@ -1,7 +1,7 @@
 {
-  "name": "challenge3connectfour",
+  "name": "challenge4bowling",
   "version": "1.0.0",
-  "description": "dependancies for connectfour server",
+  "description": "dependancies for bowling server",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,7 @@
   },
   "keywords": [
     "express",
-    "connectfour"
+    "bowling"
   ],
   "author": "Sean Lang-Brown",
   "license": "ISC",
