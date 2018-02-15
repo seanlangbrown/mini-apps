@@ -28,15 +28,7 @@ class ConnectFour extends React.Component {
       //console.log('col', col);
       for (var i = col.length - 1; i > -1 ; i--) {
         if (col[i] === null) {
-          col.splice(i, 1, this.state.turn); //add piece to col
-          //console.log('new column', col);
-          let board = this.state.board.slice();
-          board.splice(colnum, 1, col);
-          this.setState({
-            board: board, //update col in board
-            turn: this.nextTurn()
-          });
-          console.log(this.state.board);
+          this.updateSquare(colnum, i, ()=>(this.state.turn), {turn: this.nextTurn()})
           break;
         }
       }
@@ -51,6 +43,41 @@ class ConnectFour extends React.Component {
     return 'black';
   }
 
+  iterateRow(i, callback) {
+
+  }
+
+  iterateCol(i, callback) {
+
+  }
+
+  iterateDiagonal(i, callback) {
+
+  }
+
+  iterateLeftDiagonal(i, callback) {
+
+  }
+
+  updateSquare(colnum, rownum, callback, otherStates) {
+    let col = this.state.board[colnum].slice();
+    //console.log('colum', colnum, 'row', rownum);
+    col.splice(rownum, 1, callback(this.state.board[colnum][rownum])); //add piece to col
+    //console.log('new column', col);
+    let board = this.state.board.slice();
+    board.splice(colnum, 1, col);
+    let newState = {board: board}
+    for (var key in otherStates) {
+      newState[key] = otherStates[key];
+    }
+    this.setState(newState);
+    //console.log(this.state.board);
+  }
+
+  didWin() {
+
+  }
+
 
 
   render() {
@@ -60,8 +87,11 @@ class ConnectFour extends React.Component {
     console.log('rendering');
 
     return ( 
-      <div class="board">
-        {squares}
+      <div class="connectFour">
+        <div class="board">
+          {squares}
+        </div>
+        <div class="messages">Let's Play Connect Four!</div>
       </div>
     );
   }
