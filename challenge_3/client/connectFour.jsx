@@ -1,14 +1,21 @@
 import React from 'react';
+import ConnectFourSquare from './connectFourSquare.jsx';
 
 
 class ConnectFour extends React.Component {
-  //console.log('constructor');
+  constructor(props) {
+    console.log('constructor');
+    super(props);
+  }
 
 
   render() {
+    let message = <ConnectFourSquare />;
     console.log('rendering');
     return ( 
-      <h1>Hello, world two!</h1> 
+      <div class="board">
+        {message} 
+      </div>
     );
   }
 

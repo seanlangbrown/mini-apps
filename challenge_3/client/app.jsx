@@ -2,6 +2,8 @@
 import React from 'react';
 import ReactDOM  from 'react-dom';
 import ConnectFour from './connectFour.jsx';
+import ConnectFourSquare from './connectFourSquare.jsx';
+
 ReactDOM.render(<ConnectFour />, document.getElementById('app'));
 
 // ReactDOM.render(
