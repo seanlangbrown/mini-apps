@@ -14,8 +14,8 @@ class ConnectFourSquare extends React.Component {
     console.log('rendering square');
 
     return (
-      <div class="square">
-        <div class="piece"> Color: {this.props.color} </div>
+      <div class="square" >
+        <div class={"piece " + this.props.color} ></div>
       </div>
 
     );

@@ -4,6 +4,7 @@ import ReactDOM  from 'react-dom';
 import _ from 'lodash';
 import ConnectFour from './connectFour.jsx';
 import ConnectFourSquare from './connectFourSquare.jsx';
+import ConnectFourBoardCol from './connectFourBoardCol.jsx';
 
 
 ReactDOM.render(<ConnectFour />, document.getElementById('app'));
