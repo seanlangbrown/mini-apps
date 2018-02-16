@@ -8,7 +8,8 @@ module.exports.get = function(req, res) {
 };
 
 module.exports.post = function(req, res) {
-  scoresDb.post(req.data.name, req.data.score);
+  console.log('req.body', req.body);
+  scoresDb.post(req.body.name, req.body.score);
   res.end('POST');
 
 };
