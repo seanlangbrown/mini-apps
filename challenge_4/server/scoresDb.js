@@ -18,11 +18,19 @@ initDB = function() {
 };
 
 
-module.exports.get = function() {
-
+module.exports.get = function(callback) {
+  let scores = Score.find({}, (err, data) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log('retrieve from mongoDB', data);
+      callback(data);
+    }
+  })
 };
 
 module.exports.post = function(player, points) {
+  console.log('posting new score to MongoDB');
   let newScore = new Score({name: player, score: points});
   newScore.save();
 

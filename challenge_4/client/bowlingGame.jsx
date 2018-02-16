@@ -112,10 +112,22 @@ class BowlingGame extends React.Component {
     .then(function (response) {
       console.log(response);
     })
+    .then(this.getScore())
     .catch(function (error) {
       console.log(error);
     });
 
+  }
+
+  getScore() {
+    console.log('getting score');
+    axios.get('/scores')
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
 
