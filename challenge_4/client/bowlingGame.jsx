@@ -3,6 +3,7 @@ import _ from 'lodash';
 import ScoreBoard from './scoreBoard.jsx';
 import BowlingLane from './bowlingLane.jsx';
 import BowlingControls from './bowlingControls.jsx';
+import axios from 'axios';
 
 class BowlingGame extends React.Component {
 	
@@ -88,17 +89,32 @@ class BowlingGame extends React.Component {
         if (this.state.turn < 10 || pinsLeft === 0) {
           return [1, this.state.turn + 1];
         } else if (this.state.turn > 9) {
-          //game over
+          this.postScore();
           return [null, null];
         }
       } else {
         if (this.state.turn < 11 || this.isLastTurnSpecial() === 'strike') {
           return [2, this.state.turn];
         } else {
-          //game over
+          this.postScore();
           return [null, null];
         }
       }
+
+  }
+
+  postScore() {
+    console.log('posting score:', this.state.score);
+    axios.post('/scores', {
+      name: 'Pro Bowler',
+      score: this.state.score
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   }
 
