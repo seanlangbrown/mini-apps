@@ -4,7 +4,7 @@ const scoreData = require('./server/scoreData.js');
 const bodyParser = require('body-parser');
 
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());//urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/client/index.html');
